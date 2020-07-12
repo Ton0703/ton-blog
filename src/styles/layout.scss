@@ -1,7 +1,8 @@
 .layout {
   width: 100%;
-  min-height: 100vh;
-  
+  min-height: 200vh;
+  padding-top: 72px;
+  position: relative;
 
   header {
     width: 100%;
@@ -12,29 +13,120 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: all 0.3s ease;
 
-    .logo{
+    .menu {
+      ul {
+        display: flex;
+        list-style: none;
 
+        & > li {
+          margin: 0 20px;
+          font-size: 1.2rem;
+        }
+      }
+
+      @media screen and (max-width: 500px) {
+         display: none;
+      }
+    }
+    .menuVisible {
+      @media screen and (max-width: 500px) {
+        transform: translateX(0);
+      }
     }
 
-    .menu{
-        ul{
-            display: flex;
-            list-style: none;
+    .visibleBtn {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      top: 18px;
+      right: 40px;
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      z-index: 20;
 
-            & > li{
-                margin: 0 20px;
-                font-size: 1.2rem;
-            }
+      @media screen and (max-width: 500px){
+        display: flex;
+      }
+
+      .line{
+        width: 100%;
+        height: 3px;
+        background-color: #000;
+        transition: all .3s ease;
+        transform-origin: center center;
+      }
+    }
+
+    .on{
+       .line{
+         &:nth-child(1){
+           transform: rotate(45deg) translateY(15px) translateX(4px)
+         }
+         &:nth-child(2){
+           opacity: 0;
         }
+        &:nth-child(3){
+          transform: rotate(-45deg) translateY(-15px) translateX(4px)
+        }
+       } 
     }
   }
 
-  footer{
-      width: 100%;
-      height: 200px;
+  .top {
+    box-shadow: none;
+    background-color: #fff;
+  }
+  .visible {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  .siderBar{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 30;
+    visibility: hidden;
+    transition: all .3s ease;
+
+    .closeMenu {    
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;  
+    }
+    .siderMenu{
+      width: 60%;
+      height: 100%;
+      background-color: #fff;
       position: absolute;
-      bottom: 0;
-      background-image: linear-gradient(-45deg, rgb(38, 44, 65) 0%, rgb(70, 80, 122) 100%);;
+      top: 0;
+      right: 0;
+      transition: all .3s ease;
+    }
+  }
+
+  .menuVisible{
+    visibility: visible;
+  }
+
+  footer {
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    bottom: 0;
+    background-image: linear-gradient(
+      -45deg,
+      rgb(38, 44, 65) 0%,
+      rgb(70, 80, 122) 100%
+    );
   }
 }

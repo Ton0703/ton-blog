@@ -14,7 +14,7 @@ const Posts = ({ data, pageContext }) => {
     <Layout>
         <SEO />
       {posts.map((item, index) => (
-        <div>
+        <div key={index}>
           <Link to={`/${item.node.frontmatter.slug}`}>
             {item.node.frontmatter.title}
           </Link>
