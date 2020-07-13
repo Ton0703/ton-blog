@@ -1,8 +1,8 @@
 .layout {
   width: 100%;
-  min-height: 200vh;
-  padding-top: 72px;
+  min-height: 100vh;
   position: relative;
+  padding-bottom: 200px;
 
   header {
     width: 100%;
@@ -17,6 +17,12 @@
     top: 0;
     left: 0;
     transition: all 0.3s ease;
+    z-index: 2000;
+    transition: all .3s ease;
+
+    @media screen and (max-width: 500px) {
+      padding: 0 20px;
+    }
 
     .menu {
       ul {
@@ -26,11 +32,16 @@
         & > li {
           margin: 0 20px;
           font-size: 1.2rem;
-        }
-      }
 
-      @media screen and (max-width: 500px) {
-         display: none;
+          a {
+            color: rgb(51, 52, 56);
+          }
+
+          @media screen and (max-width: 500px) {
+            margin: 0 10px;
+            font-size: 1rem;
+          }
+        }
       }
     }
     .menuVisible {
@@ -50,44 +61,80 @@
       justify-content: space-around;
       z-index: 20;
 
-      @media screen and (max-width: 500px){
+      @media screen and (max-width: 500px) {
         display: flex;
       }
 
-      .line{
+      .line {
         width: 100%;
         height: 3px;
         background-color: #000;
-        transition: all .3s ease;
+        transition: all 0.3s ease;
         transform-origin: center center;
       }
     }
 
-    .on{
-       .line{
-         &:nth-child(1){
-           transform: rotate(45deg) translateY(15px) translateX(4px)
-         }
-         &:nth-child(2){
-           opacity: 0;
+    .on {
+      .line {
+        &:nth-child(1) {
+          transform: rotate(45deg) translateY(15px) translateX(4px);
         }
-        &:nth-child(3){
-          transform: rotate(-45deg) translateY(-15px) translateX(4px)
+        &:nth-child(2) {
+          opacity: 0;
         }
-       } 
+        &:nth-child(3) {
+          transform: rotate(-45deg) translateY(-15px) translateX(4px);
+        }
+      }
+    }
+  }
+
+  .header {
+    width: 100%;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #fff;
+
+    .title{
+       animation: title .3s ease forwards;
+       width: 100%;
+       text-align: center;
+       overflow: hidden;
+       white-space: nowrap;
+       text-overflow: ellipsis;
+    }
+
+    .date{
+      font-size: 1rem;
+      margin-top: 10px;
+      animation: date .3s ease forwards;
     }
   }
 
   .top {
     box-shadow: none;
-    background-color: #fff;
+
+    .menu {
+      ul {
+        li {
+          a {
+            color: #fff;
+          }
+        }
+      }
+    }
   }
   .visible {
     transform: translateY(-100%);
     opacity: 0;
   }
 
-  .siderBar{
+  .siderBar {
     position: fixed;
     left: 0;
     top: 0;
@@ -95,26 +142,26 @@
     height: 100vh;
     z-index: 30;
     visibility: hidden;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
 
-    .closeMenu {    
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;  
+    .closeMenu {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
     }
-    .siderMenu{
+    .siderMenu {
       width: 60%;
       height: 100%;
       background-color: #fff;
       position: absolute;
       top: 0;
       right: 0;
-      transition: all .3s ease;
+      transition: all 0.3s ease;
     }
   }
 
-  .menuVisible{
+  .menuVisible {
     visibility: visible;
   }
 
@@ -123,10 +170,37 @@
     height: 200px;
     position: absolute;
     bottom: 0;
-    background-image: linear-gradient(
-      -45deg,
-      rgb(38, 44, 65) 0%,
-      rgb(70, 80, 122) 100%
-    );
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+
+    a{
+      color: #fff;
+      border-bottom: 1px solid #fff;
+    }
+  }
+}
+
+
+@keyframes title{
+  0%{
+     opacity: 0;
+     transform: translateY(-60px);
+  }
+  100%{
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+@keyframes date{
+  0%{
+     opacity: 0;
+     transform: translateX(60px);
+  }
+  100%{
+      opacity: 1;
+      transform: translateX(0);
   }
 }

@@ -1,7 +1,48 @@
-.tag-wrapper{
+.tag-container{
+    padding: 60px 60px;
+    display: flex;
+    flex-wrap: wrap;
 
-    span{
-        display: inline-block;
-        margin: 0 5px;
+    @media screen and (max-width: 500px) {
+         padding: 30px 30px;
+    }
+}
+
+.tag{
+    display: flex;
+    margin: 8px 10px;
+    animation: tag .3s ease forwards;
+
+    .tag-left{
+        padding: 6px 8px;
+        background-color: rgb(108, 99, 255);
+        color: #fff;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        cursor: pointer;
+
+    }
+    .tag-right{
+        padding: 6px 8px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border: 1px solid rgb(108, 99, 255);
+    }
+}
+
+.tags{
+    padding: 60px;
+    @media screen and (max-width: 500px) {
+        padding: 30px 20px;
+    }
+}
+
+@keyframes tag{
+    0%{
+        opacity: 0;
+    }
+
+    100%{
+        opacity: 1;
     }
 }

@@ -2,6 +2,7 @@ import React from "react"
 import Highlight, { defaultProps } from "prism-react-renderer"
 import theme from "prism-react-renderer/themes/vsDark"
 
+//代码高亮
 export const Code = ({ codeString, language, ...props }) => {
   return (
     <Highlight {...defaultProps} code={codeString} language={language} theme={theme}>

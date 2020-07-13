@@ -1,0 +1,124 @@
+---
+title: Grid布局
+slug: Grid布局
+date: 2020-09-01
+featureImage: test.jpeg
+excerpt: 目前为止，css的排版方式大约分为Table，float，flex，grid四种。其中table和float现在已经被使用的越来越少，而Flex和Grid则是现在最流行的网页布局方式，它们都是正真为了网页布局而设计的网页排版方式。对比与Flex，Grid与它最大的区别就是...
+tags: 
+- CSS
+- Grid
+---
+# 一、介绍
+ 目前为止，css的排版方式大约分为**Table**，**float**，**flex**，**grid**四种。其中**table**和**float**现在已经被使用的越来越少，而**Flex**和**Grid**则是现在最流行的网页布局方式，它们都是正真为了网页布局而设计的网页排版方式。
+ 
+ 对比与Flex，**Grid**与它最大的区别就是**Grid**是二维排版方式，它可以同时控制两个方向（**row**和**column**）。
+ 
+#  二、Grid布局
+## 1、新建一个grid布局
+```css
+body {
+  display: gird
+}
+```
+## 2、grid-template-rows、grid-template-column
+**grid-template-rows：**竖直方向上划分的空间
+```css
+{
+  grid-template-rows：100px 100px;
+}
+//划分成2个长度为100px的空间
+```
+**grid-template-column：** 水平方向上划分出的空间。
+```css
+{
+   grid-template-column: 100px 100px
+}
+//水平方向上划分出两个宽度为100px 的空间
+```
+如果子元素没有设置，那么就会在第一行开始水平方向从左往右进行排列，一行排满才会到下一行。
+
+## 3、grid-row、grid-column
+这两个属性是给子元素设置其在grid布局中的位置的。
+```css
+{
+   grid-row: 1 / 3;   //   元素在水平方向上 占据第一、第二格
+   grid-column: 4 / 6;  //元素在垂直方向上占据第四、第五格
+}
+```
+可以得出规律，a / b 代表从第 **a** 格开始到 **b-1** 格为止。 
+
+## 4、grid-area
+grid-area为上面两个属性的简写。
+```css
+{
+    grid-row: 1 / 3;  
+	grid-column: 4 / 6; 
+}
+```
+可以简写成
+```css
+{
+    grid-area:  1 / 4 / 3 / 6
+}
+```
+就是把**grid-row**和**grid-column**的第一个属性写前面，第二个属性写后面。
+可以看成前两个数字代表区域左上角的坐标（原点为1, 1），后两个数字代表区域右下角的坐标（原点为1, 1）。
+
+**grid-area**虽然是简写，但是不怎么直观，所以尽量还是分开来写。
+
+## 4、延伸 span
+**可以用span属性来表示延伸了几格**
+```css
+{
+    grid-row: 1 / span 3
+}
+//表示水平方向从第一格开始往右边延伸3格
+```
+
+## 5、grid-template-areas
+grid-template-areas可以给每一个网格命名。比如我们有一个5 x 5的网格。
+```css
+{
+   grid-template-rows：100px 100px 100px 100px 100px;
+   grid-template-column：100px 100px 100px 100px 100px;
+}
+```
+这时候我们就可以用grid-template-areas去给每一个网格命名了。
+```css
+{
+     grid-template-areas: "header header header header header"
+		 "nav main main main main "
+		 "nav main main main main "
+		 "nav main main main main "
+		 ".  footer footer footer ."
+}
+//每个网格都有个名字，. 代表忽略这个网格。
+```
+我们如果要在header里面放元素，可以在子元素中使用grid-area属性
+```css
+{
+    grid-area: header
+}
+该元素会填充名字为header的区域
+```
+
+## 6、gap
+**row-gap**和**column-gap**可以分别设置水平方向和竖直方向两个网格之间的间距。
+```css
+{
+    row-gap: 10px;
+	column-gap: 10px
+}
+```
+
+## 7、fr和repeat
+**fr**是一个单位，专门用于比例的单位。1fr代表一份，如果只有一个rf，那么1fr等与100%，如果有两个，那么1fr等于50%。
+如果是是3fr 1fr ，那么第一个网格占据3/4， 第二个占据1/4。
+
+**repeat**是一个函数，repeat(n, 1fr) 代表 **n** 个 **1fr**
+```css
+{
+    grid-template-rows: repeat(5, 1fr)   //grid-template-rows: 1fr 1fr 1fr 1fr 1fr
+}
+```
+需要注意的是**repeat**不适用与**grid-template-areas**

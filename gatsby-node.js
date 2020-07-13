@@ -1,7 +1,7 @@
 exports.createPages = async function ({ actions, graphql }) {
   const { data } = await graphql(`
     query {
-      allMdx(sort: { order: DESC, fields: frontmatter___date }) {
+      allMdx(sort: {fields: frontmatter___date, order: DESC}) {
         edges {
           node {
             id
@@ -9,6 +9,7 @@ exports.createPages = async function ({ actions, graphql }) {
               title
               slug
               tags
+              date
             }
           }
         }
@@ -17,7 +18,7 @@ exports.createPages = async function ({ actions, graphql }) {
   `)
 
   //allPosts
-  const postPerPage = 2
+  const postPerPage = 5
   const numPages = Math.ceil(data.allMdx.edges.length / postPerPage)
 
   Array.from({ length: numPages }).forEach((_, i) => {
@@ -34,27 +35,38 @@ exports.createPages = async function ({ actions, graphql }) {
   })
 
   //singlePost
-  data.allMdx.edges.map((item) => {
-      const id = item.node.id
-      const slug = item.node.frontmatter.slug
-      actions.createPage({
-          path: slug,
-          component: require.resolve('./src/templates/singlePost.js'),
-          context: {id}
-      })
+  data.allMdx.edges.map((item, index) => {
+    const pre = index === 0 ? null : data.allMdx.edges[index - 1].node
+    const next =
+      index === data.allMdx.edges.length - 1
+        ? null
+        : data.allMdx.edges[index + 1].node
+    const id = item.node.id
+    const slug = item.node.frontmatter.slug
+    actions.createPage({
+      path: slug,
+      component: require.resolve("./src/templates/singlePost.js"),
+      context: {
+        id,
+        pre,
+        next,
+      },
+    })
   })
 
   //tag
- const tags = data.allMdx.edges
- const tagSet = new Set()
- tags.forEach(item => item.node.frontmatter.tags.forEach(tag => tagSet.add(tag)))
- tagSet.forEach(tag => {
-     actions.createPage({
-         path: `/tag/${tag}`,
-         component: require.resolve('./src/templates/tag.js'),
-         context: {
-             targetTag: tag
-         }
-     })
- })
+  const tags = data.allMdx.edges
+  const tagSet = new Set()
+  tags.forEach(item =>
+    item.node.frontmatter.tags.forEach(tag => tagSet.add(tag))
+  )
+  tagSet.forEach(tag => {
+    actions.createPage({
+      path: `/tag/${tag}`,
+      component: require.resolve("./src/templates/tag.js"),
+      context: {
+        targetTag: tag,
+      },
+    })
+  })
 }

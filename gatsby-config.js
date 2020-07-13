@@ -7,16 +7,10 @@
 module.exports = {
   /* Your site config here */
   siteMetadata: {
-    title: `随便写写`,
-    author: {
-      name: `Ton`,
-      summary: `who lives and works in San Francisco building useful things.`,
-    },
+    title: `Ton' Blog`,
+    author: `Ton`,
     description: `A starter blog demonstrating what Gatsby can do.`,
     //siteUrl: `null`,
-    social: {
-      twitter: `Ton`,
-    },
   },
   plugins: [
     `gatsby-plugin-sass`,
@@ -61,6 +55,20 @@ module.exports = {
           }
         ]
       }
+    },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `GatsbyJS`,
+        short_name: `GatsbyJS`,
+        start_url: `/`,
+        background_color: `#6b37bf`,
+        theme_color: `#6b37bf`,
+        // Enables "Add to Homescreen" prompt and disables browser UI (including back button)
+        // see https://developers.google.com/web/fundamentals/web-app-manifest/#display
+        display: `standalone`,
+        icon: `src/images/space.svg`, // This path is relative to the root of the site.
+      },
     },
     `gatsby-plugin-sharp`, 
     `gatsby-transformer-sharp`,

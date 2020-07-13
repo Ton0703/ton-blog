@@ -1,0 +1,104 @@
+---
+title: ES6中的数值属性
+date: 2016-02-14 22:32:41
+slug: ES6中的数值属性
+excerpt: ES6中新增的一些数值属性，包裹Number和Math...
+tags:
+- ES6
+- JavaScript
+---
+# 一、Number
+### 1.Number.isFinite()
+用来检测一个数值是否有限
+```js
+Number.isFinite(15)  //true
+Number.isFinite(Infinity)  //false
+```
+
+### 2.Number.isNaN()
+用来检测一个数值是否为NaN
+```js
+Number.isNaN(15)  //true
+Number.isNaN(NaN)  //false
+```
+
+### 3.Number.parseInt() 、 Number.parseFloat()
+把字符串转化成数字
+```js
+Number.parseInt(‘12.12’)   //12
+Number.parseFloat('123.45#')   //123.45
+```
+
+### 4.Number.isInteger()
+用来判断一个值是否为整数
+```js
+Number.isInteger(25)  //true
+Number.isInteger(25.0)  //true
+Number.isInteger(25.1)  //false
+```
+
+### 5.Number.EPSILON
+一个很小的常量
+```js
+Number.EPSILON
+//2.220446049250313e-16
+```
+目的在于为浮点计算设置一个误差范围，当误差小于这个值，我们就认为得到了正确结果。
+
+# 二、Math
+### 1.Math.trunc()
+除去一个数的小数部分，返回整数部分
+```js
+Math.trunc(4.1)  //4
+Math.trunc(4.9)  //4
+Math.trunc(-4.1)  //-4
+Math.trunc('4.1')  //4
+```
+相当于
+```js
+function(x){
+   return x < 0 ? Math.ceil(x) : Math.floor(x)
+}
+```
+
+### 2.Math.sign()
+用来判断一个数是正数、负数还是零（1, -1,  0）
+
+### 3.Math.cbrt()
+用来计算一个数的立方更
+```js
+Math.cbrt(8)  //2
+```
+
+### 3.Math.clz32()
+返回一个数的32位无符号整数形式有多少个前导0。
+
+### 4.Math.imul()
+返回两个数相乘的结果
+```js
+Math.imul(2, 4)  //8
+Math.imul(-1, 8)  //-8
+```
+
+### 5.Math.fround()
+返回一个数的单精度浮点数形式
+对于整数来说返回的结果不会有任何变化，区别主要在于那些无法用64个2进制位精确表示的小数。
+```js
+Math.fround(1)  //1
+Math.fround(1.337) //1.3370000123977661
+```
+
+### 6.Math.hypot()
+返回所有参数的平方和的平方根
+可以用来求直角三角形斜边长度
+```js
+Math.hypot(3, 4)  //5
+Math.hypot(3, 4, 5)  //7.07
+```
+
+## 三、指数运算符
+ES6新增了一个指数运算符（**）
+```js
+2 ** 2  //4
+2 ** 3  //8
+```

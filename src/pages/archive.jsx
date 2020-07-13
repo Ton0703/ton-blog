@@ -2,9 +2,9 @@ import React from 'react'
 import {graphql, Link} from 'gatsby'
 import Layout from '../components/layout'
 import SEO from '../components/seo'
+import Card from '../components/archiveCard'
 
 function Archive({data}) {
-    console.log(data)
     const posts = data.allMdx.edges
     const map = new Map()
     for(let post of posts){
@@ -14,15 +14,16 @@ function Archive({data}) {
         } 
         map.get(date).push(post)
     }
-    console.log(map)
     const archiveArr = Array.from(map)
+    const color = '#00BFA6'
     return (
-        <Layout>
+        <Layout color={color} title='归档'>
             <SEO 
-               title='archive'
+               title='Archive'
             />
+            <div className="archive">
             {archiveArr.map((item, index) => (
-                <div key={index}>
+                <Card key={index} year={item[0]} data={item[1]}>
                     {item[0]}
                     {item[1].map((item, index) => (
                         <div key={index}>
@@ -31,8 +32,9 @@ function Archive({data}) {
                             </Link>
                         </div>
                     ))}
-                </div>
+                </Card>
             ))}
+            </div>
         </Layout>
     )
 }

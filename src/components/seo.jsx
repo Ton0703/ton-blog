@@ -11,9 +11,7 @@ const SEO = ({ description, lang, meta, title }) => {
           siteMetadata {
             title
             description
-            social {
-              twitter
-            }
+            author
           }
         }
       }
@@ -27,8 +25,8 @@ const SEO = ({ description, lang, meta, title }) => {
       htmlAttributes={{
         lang,
       }}
-      title={title ? title : site.siteMetadata.title}
-      //titleTemplate={`%s | ${site.siteMetadata.title}`}
+      title={title}
+      titleTemplate={`%s | ${site.siteMetadata.title}`}
       meta={[
         {
           name: `description`,
@@ -49,10 +47,6 @@ const SEO = ({ description, lang, meta, title }) => {
         {
           name: `twitter:card`,
           content: `summary`,
-        },
-        {
-          name: `twitter:creator`,
-          content: site.siteMetadata.social.twitter,
         },
         {
           name: `twitter:title`,

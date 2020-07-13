@@ -8,16 +8,15 @@ function FeatureImage({ fixed }) {
       imageSharp(fixed: { originalName: { eq: "office.jpeg" } }) {
         id
         fixed {
-            ...GatsbyImageSharpFixed
+          ...GatsbyImageSharpFixed
         }
       }
     }
   `)
-  console.log(data)
   return (
-      <div>
-          <Img fixed={fixed ? fixed : data.imageSharp.fixed} />
-      </div>
+    <div>
+      <Img fixed={fixed ? fixed : data.imageSharp.fixed} />
+    </div>
   )
 }
 

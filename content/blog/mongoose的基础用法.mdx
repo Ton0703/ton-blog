@@ -1,0 +1,274 @@
+---
+title: mongoose的基础用法
+slug: mongoose的基础用法
+date: 2019-07-01
+featureImage: test.jpeg
+excerpt: 关于 mongoose 的一些基本不重复强调，mongoose 只要搞明白schema， model ，entity三个概念及关系就行了...
+tags:
+- Node
+- MongoDB
+---
+# 一、mongoose
+> 关于 mongoose 的一些基本不重复强调
+
+mongoose 只要搞明白 **schema**， **model** ，**entity** 三个概念及关系就行了。
+
+
+
+| 概念 | 描述 |
+| -------- | -------- | 
+| **Schema**    | **一种以文件形式存储的数据库模型骨架，不具备数据库的操作能力**     | 
+| **Model**     | **由Schema发布生成的模型，具有抽象属性和数据库操作能力**     | 
+| **Entity**     | **由Model创建的实例,也能操作数据库**     | 
+
+&emsp;
+&emsp;
+
+mongoose 文档地址：
+[https://mongoosejs.com/docs/index.html](https://mongoosejs.com/docs/index.html)
+# 二、mongoose 连接数据库
+>文件路径：`./db.js`
+
+```
+1. const mongoose = require('mongoose');
+2. // mongoose.connect("mongodb://user:pass@localhost:port/database");
+3. mongoose.connect('mongodb://192.168.158.128:27017/test');
+4. const db = mongoose.connection;
+5. // error
+6. db.on('error',(err)=>{ console.log('连接失败',err.getMessage);});
+7. // open
+8. db.on('open',()=>{console.log('连接成功')});
+9. module.exports = db;
+```
+
+
+
+# 三、构建 Schema 和 Model
+**Schema** 其实主要是对 collection 的数据格式进行了规范，然后通过这个规范抽象 collection 的模型。
+
+***注意，很多文章都对于 mongoose.model() 方法只写两个参数，其实建议最少应该写三个参数
+如果不写第三个参数，会导致当库中不存在 collection 的时候，会根据 ModelName 的复数形式创建 collection，这显然不是期待的结果，更多这方面的内容，可以了解：***
+[https://cnodejs.org/topic/595e2ff9a4de5625080fe15e](https://)
+
+
+
+| 参数  | 描述 | 
+| -------- | -------- |
+| ModelName     | 抽象的模型的名字     | 
+| Schema     | 创建的 Schema 变量     | 
+| collectionName     | 关联的库中的 collection 的名字     | 
+
+```
+1. const mongoose = require('mongoose');
+2. const db = require('../db');
+3. // 构建 userSchema
+4. const userSchema = mongoose.Schema({
+5.   name:{type:String},
+6.   age:{type:Number,default:0},
+7. });
+8. // 构建model
+9. const User = mongoose.model('User',userSchema,'user');
+10. module.exports = User;
+```
+
+
+导出 model 以供其他的文件或者方法操作数据库。
+# 四、数据查询
+引入 User 的 Model，之后不再重复。
+```
+1. const User = require('./model/User');
+```
+代码中均使用 Promise 的操作，不使用回调函数,不再重复
+
+Model 提供的查询方法列表：
+
+* Model.find()
+* Model.findById()
+* Model.findByIdAndDelete()
+* Model.findByIdAndRemove()
+* Model.findByIdAndUpdate()
+* Model.findOne()
+* Model.findOneAndDelete()
+* Model.findOneAndRemove()
+* Model.findOneAndUpdate()
+
+## 1、查询所有文档 find()
+
+```
+1. User.find({}).then((docs)=>{
+2.   console.log(docs);
+3. }).catch((err)=>{});
+```
+
+## 2、查找符合条件的一条数据 findOne()
+
+```
+1.  // 查询条件 查找一个
+2. User.findOne({_id:'5afe590b6fdc493791ab1478'}).then((doc)=>{
+3.   console.log(doc);
+4. }).catch((err)=>{});
+```
+
+## 3、通过 _id 查询 findById()
+
+```
+1. User.findById('5afe590b6fdc493791ab1478').then((doc)=>{
+2.   console.log(doc);
+3. });
+```
+
+# 五、数据插入
+
+Model 提供的数据插入方法：
+
+* Model.create()
+
+*除了使用 model 提供的 create() 方法插入数据外，还可以通过构建 Entity 实例，插入数据，而 Entity 实例提供的方法是 enetity.save()*
+
+
+## 1、插入一条数据 create()
+```
+1. User.create({name:'ptbird-model',age:18}).then((res)=>{
+2.   console.log(res);
+3. });
+```
+## 2、插入多条数据 create()
+
+```
+1. const array = [{name:'ptbird-model-1',age:18},{name:'ptbird-model-2',age:18}];
+2. User.create(array).then((res)=>{
+3.   console.log(res);
+4. })
+```
+## 3、使用 entity 实例保存 save()
+
+```
+1. const entity = new User({name:'ptbird-entity',age:18});
+2. entity.save().then((res)=>{
+3.   console.log(res);
+4. });
+```
+# 六、数据更新
+
+Model 提供的数据更新方法：
+* Model.update()
+* Model.updateMany()
+* Model.updateOne()
+## 1、更新一条数据 updateOne()
+```
+let conditions = {name:'ptbird-model'};
+let update = {$set:{name:'ptbird-model-update'}};
+User.updateOne(conditions,update).then((res)=>{
+  console.log(res);
+});
+```
+## 2、更新所有符合条件的数据 updateMany()
+
+```
+let conditions = {name:'ptbird-model'};
+let update = {$set:{name:'ptbird-model-update'}};
+User.updateMany(conditions,update).then((res)=>{
+  console.log(res);
+});
+```
+
+## 3、使用 update() 更新
+update() 方法默认只更新一条数据
+```
+let conditions = {name:'ptbird-model'};
+let update = {$set:{name:'ptbird-model-update'}};
+User.update(conditions,update).then((res)=>{
+  console.log(res);
+});
+```
+# 七、数据删除
+Model 提供的数据删除方法：
+* Model.deleteMany()
+* Model.deleteOne()
+* Model.remove()
+## 1、删除一条数据 deleteOne()
+```
+let conditions = {name:'ptbird-model-update'};
+User.deleteOne(conditions).then((res)=>{
+  console.log(res);
+});
+```
+## 2、删除所有符合条件的数据 deleteMany()
+```
+let conditions = {name:'ptbird-model-update'};
+User.deleteMany(conditions).then((res)=>{
+  console.log(res);
+});
+```
+# 八、高级查询
+## 1、查询特定字段
+
+必定会出现
+
+**只查询 age 字段：**
+```
+User.find({},'age').then((docs)=>{
+  console.log(docs);
+}).catch((err)=>{
+```
+## 2、条件判断查询
+**查询年龄大于等于18岁的所有文档**
+
+```
+let conditions = {age:{$gte:18}};
+User.find(conditions).then((docs)=>{
+  console.log(docs);
+});
+```
+**查询所有年龄是 18 和 20 的文档**
+```
+conditions = {age:{$in:[18,20]}};
+User.find(conditions).then((docs)=>{
+    console.log(docs);
+});
+```
+**查询年龄是17 或者 16 的所有文档**
+
+```
+conditions = {$or:[{age:16},{age:17}]};
+User.find(conditions).then((docs)=>{
+    console.log(docs);
+});
+```
+**查询年龄是 17 或者 16 的所有文档**
+```
+conditions = {sex:{$exists:true}};
+User.find(conditions).then((docs)=>{
+    console.log(docs);
+});
+```
+# 九、游标操作和排序
+
+## 1、skip 和 limit
+**链式调用方法进行查询**
+```
+User.find().skip(2).limit(2).then((docs)=>{
+    console.log(docs);
+});
+```
+**通过参数配置进行查询**
+```
+ User.find({},null,{skip:2,limit:1}).then((docs)=>{
+    console.log(docs);
+ });
+```
+## 2、排序
+sort 排序 1：升序 / -1：降序
+**通过链式调用**
+```
+  User.find().sort({age:1}).skip(3).limit(3).then((docs)=>{
+    console.log(docs);
+  });
+```
+**通过参数配置**
+
+```
+ User.find({},null,{sort:{age:-1}).then((docs)=>{
+    console.log(docs);
+  });
+```

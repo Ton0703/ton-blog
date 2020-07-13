@@ -1,0 +1,53 @@
+.archive {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .archiveCard {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgb(0, 191, 166);
+    color: #fff;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    border-radius: 10px;
+
+    animation: archive 0.3s ease forwards;
+
+    .archiveYear {
+      font-size: 2rem;
+      font-weight: 600;
+    }
+    .archiveData {
+      padding-left: 30px;
+
+      .archiveDataItem {
+        font-size: 1.2rem;
+        cursor: pointer;
+        a {
+          color: #fff;
+          display: flex;
+          align-items: center;
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
+
+@keyframes archive {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
