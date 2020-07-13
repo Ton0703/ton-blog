@@ -14,7 +14,7 @@ const Posts = ({ data, pageContext }) => {
   const color =
     "linear-gradient(-45deg, rgb(38, 44, 65) 0%, rgb(70, 80, 122) 100%)"
   return (
-    <Layout color={color} title="文章">
+    <Layout color={color} catalogue="文章">
       <SEO title='Home'/>
       <div className="article-container">
         {posts.map((item, index) => (

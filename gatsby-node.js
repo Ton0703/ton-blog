@@ -9,7 +9,6 @@ exports.createPages = async function ({ actions, graphql }) {
               title
               slug
               tags
-              date
             }
           }
         }
